@@ -8,12 +8,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jchassin/homebridge-owfs.git"
+    "url": "git://github.com/rnilssoncx/homebridge-onewire.git"
   },
-  "files": [
-    "index.js",
-    "README.md"
-  ],
   "keywords": [
     "homebridge-plugin"
   ],
@@ -24,9 +20,8 @@
   "author": "Robert Nilsson",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jchassin/homebridge-owfs/issues"
+    "url": "https://github.com/rnilssoncx/homebridge-onewire/issues"
   },
-  "homepage": "https://github.com/jchassin/homebridge-owfs#readme",
   "dependencies": {
     "fakegato-history": "^0.4.0",
     "moment": "^2.20.1",
