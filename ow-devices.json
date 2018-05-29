@@ -1,0 +1,26 @@
+{
+  "DS18B20": {
+    "services": ["temperature"],
+    "logger": "room",
+    "OWFSServer": {
+      "temperature": ["temperature", "float", 1]     
+    }
+  },
+  "DS2438": {
+    "services": ["temperature", "humidity"],
+    "logger": "room",
+    "OWFSServer": {
+      "temperature": ["temperature", "float", 1],
+      "humidity": ["humidity", "float", 1]
+    }
+  },
+  "EDS0065": {
+    "services": ["temperature", "humidity"],
+    "logger": "room",
+    "OWFSServer": {
+      "temperature": ["EDS0065/temperature", "float", 1],
+      "humidity": ["EDS0065/humidity", "float", 1]
+  
+    }
+  }
+}
