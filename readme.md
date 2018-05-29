@@ -1,10 +1,63 @@
-# OneWire
+# OneWire Platform
 
-A platform that allows [1-Wire](https://en.wikipedia.org/wiki/1-Wire) devices to be linked to HomeKit through Homebridge.  This plugin supports both the [OWFS 1-Wire Filesystem](http://owfs.org/) as well as the [EDS OW-SERVER](https://www.embeddeddatasystems.com/OW-SERVER-1-Wire-to-Ethernet-Server-Revision-2_p_152.html) platform.
+A platform that allows [1-Wire](https://en.wikipedia.org/wiki/1-Wire) devices to be linked to HomeKit through Homebridge.  This plugin supports both the [OWFS 1-Wire Filesystem](http://owfs.org/) as well as the [EDS (Embedded Data Systems) OW-SERVER](https://www.embeddeddatasystems.com/OW-SERVER-1-Wire-to-Ethernet-Server-Revision-2_p_152.html) platform.
 
-Currently the plugin supports Temperature and Humidity sensors.  Check the file `ow-devices.json` for the list of devices.
+Currently the plugin supports Temperature and Humidity sensors.  Check the file [`ow-devices.json`](ow-devices.json) for the list of devices.
 
+## Why do we need this platform
 
+The implementation of a 1-Wire system is simple, but relies on hardware that limits the flexibility of deployment.  Using the EDS OW-SERVER is a reasonably low cost and formally supported alternative to the OWFS system, and doesn't require the maintenance of a Linux platform.
+
+## Installation instructions
+
+After [Homebridge](https://github.com/nfarina/homebridge) has been installed:
+
+ `sudo npm install -g homebridge-onewire`
+
+## Example config.json:
+
+```json
+{
+  "bridge": {
+      ...
+  },
+  "platforms": [
+    {
+      "platform": "OneWire",
+      "server": "EDS",
+      "host": "<IP Address or Host Name>",
+      "port": "80",
+      "devices": [
+        {
+          "name": "Wiring Closet",
+          "address": "2848DCC800EF0055",
+          "type": "DS18B20"
+        },
+        {
+          "name": "Upper Attic",
+          "address": "26BAF7D60F000073",
+          "type": "DS2438"
+        }
+      ]
+    }
+  ]
+}
+```
+
+`server`:
+
+* "EDS" - EDS OW-SERVER hardware platform
+* "OWFS" - Uses the OWFS [`owserver`](http://owfs.org/index.php?page=owserver)
+
+`host`: IP Address or hostname of the EDS or OWFS server
+
+`port`: Port to use for the EDS or OWFS server
+
+`devices`: List of 1-Wire devices that will be presented to HomeKit
+
+* `name`: Name of the device as it will appear in HomeKit
+* `address`: ROMId (EDS) or address (OWFS) of the 1-Wire device
+* `type`: Type of 1-Wire device (see [`ow-devices.json`](ow-devices.json) for list)
 
 ## Credits
 
