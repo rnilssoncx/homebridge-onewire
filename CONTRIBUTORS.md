@@ -1,4 +1,4 @@
-# homebridge-automation-switches Contributors (sorted alphabetically)
+# homebridge-onewire Contributors (sorted alphabetically)
 
 * [@grover](https://github.com/grover)
 
