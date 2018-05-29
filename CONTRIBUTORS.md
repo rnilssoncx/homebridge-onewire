@@ -8,7 +8,7 @@
 
   * Inspired the use of FakeGato and various techniques
 
-* [@jchassino](https://github.com/jchassin)
+* [@jchassin](https://github.com/jchassin)
 
   * Developed original 1-wire plugin - https://github.com/jchassin/homebridge-owfs
   

@@ -1,6 +1,9 @@
 # OneWire
 
-A platform that allows 1-wire devices to be linked to HomeKit.  This plugin support both the OWFS open source software as well as the EDS OW-SERVER platform.
+A platform that allows [1-Wire](https://en.wikipedia.org/wiki/1-Wire) devices to be linked to HomeKit through Homebridge.  This plugin supports both the [OWFS 1-Wire Filesystem](http://owfs.org/) as well as the [EDS OW-SERVER](https://www.embeddeddatasystems.com/OW-SERVER-1-Wire-to-Ethernet-Server-Revision-2_p_152.html) platform.
+
+Currently the plugin supports Temperature and Humidity sensors.  Check the file `ow-devices.json` for the list of devices.
+
 
 
 ## Credits
