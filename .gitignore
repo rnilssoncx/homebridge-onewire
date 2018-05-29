@@ -1,5 +1,5 @@
 /node_modules
 /.vscode
 .DS_Store
-temp.xml
+details.xml
 package-lock.json

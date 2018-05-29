@@ -61,7 +61,7 @@ class OneWire {
   }
 
   createLogger(type, accessory) {
-    return new FakeGatoHistoryService('room', accessory, {
+    return new FakeGatoHistoryService(type, accessory, {
       size: 4032,
       storage: 'fs'
     });

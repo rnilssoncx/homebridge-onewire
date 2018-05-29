@@ -13,7 +13,7 @@ class ServerEDS {
 
   getState(deviceList, callback) {
     this.log(`Pulling update from ${this.host}`)
-    http.get({ hostname: this.host, port: this.port, path: '/temp.xml' }, (resp) => {
+    http.get({ hostname: this.host, port: this.port, path: '/details.xml' }, (resp) => {
       let data = '';
 
       // A chunk of data has been recieved.
@@ -21,7 +21,7 @@ class ServerEDS {
         data += chunk;
       });
 
-      // The whole response has been received. Print out the result.
+      // The whole response has been received.
       resp.on('end', () => {
         this._processXML(data, callback);
       });
