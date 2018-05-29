@@ -4,11 +4,12 @@
 
   * Inspired the architecture and provided a great example code base
 
+* [@jchassin](https://github.com/jchassin)
+
+  * Developed the original 1-wire accessory plugin [homebridge-owfs](https://github.com/jchassin/homebridge-owfs)
+
 * [@northernman54](https://github.com/NorthernMan54)
 
   * Inspired the use of FakeGato and various techniques
 
-* [@jchassin](https://github.com/jchassin)
-
-  * Developed original 1-wire plugin - https://github.com/jchassin/homebridge-owfs
   

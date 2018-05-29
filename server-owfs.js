@@ -30,7 +30,6 @@ class ServerOWFS {
           if (result.state === "fulfilled") {
             let data = result.value;
             cleanJSON[data.device][data.attribute] = Math.round(parseFloat(data.value.replace(/[^\d.-]/g, '')) * 10) / 10;
-            this.log(`Test ${data.device} ${data.attribute} ${data.value} ${cleanJSON[data.device][data.attribute]}`);
           }
         }
         callback(null, cleanJSON);
