@@ -59,6 +59,10 @@ After [Homebridge](https://github.com/nfarina/homebridge) has been installed:
 * `address`: ROMId (EDS) or address (OWFS) of the 1-Wire device
 * `type`: Type of 1-Wire device (see [`ow-devices.json`](ow-devices.json) for list)
 
+### Optional platform settings:
+
+`update_interval`:  Number of minutes between polls of the 1-Wire system
+
 ## Credits
 
 See [CONTRIBUTORS](CONTRIBUTORS.md) for acknowledgements to the individuals that contributed to this plugin.
