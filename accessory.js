@@ -101,7 +101,7 @@ class OWAccessory {
         }
       } else {
         logValues.push(`${capability}: No data available`)
-        if (this.state[capability]) {
+        if (capability in this.state) {
           delete this.state[capability];
         }
       }
@@ -113,11 +113,11 @@ class OWAccessory {
     this.log(`${this.name} - ${logValues.join(', ')}`);
   }
 
-  getState(service, callback) {
-    if (this.state[service]) {
-      callback(null, this.state[service])
+  getState(capability, callback) {
+    if (capability in this.state) {
+      callback(null, this.state[capability])
     } else {
-      callback(new Error(`Error: No ${service} set for ${this.name}`));
+      callback(new Error(`Error: No ${capability} set for ${this.name}`));
     }
   }
 }

@@ -80,12 +80,3 @@ class OneWire {
     }
   }
 }
-
-
-      // "server": "EDS",
-      // "host": "10.10.196.133",
-      // "port": "8080",
-
-      // "server": "OWFS",
-      // "host": "10.0.1.2",
-      // "port": "3000",
