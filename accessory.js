@@ -87,6 +87,11 @@ class OWAccessory {
     let logData = { 'time': moment().unix() };
     let logValues = [];
 
+    if (typeof device == 'undefined') {
+      this.log(`${this.name} - no data received`);
+      return;
+    }
+
     for (var capability of owDevices[this.type].services) {
       if (capability in device) { // Did we get a reading?
         switch (capability) {
