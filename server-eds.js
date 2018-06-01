@@ -4,15 +4,18 @@ const convert = require('xml-js');
 const http = require('http');
 
 class ServerEDS {
-  constructor (log, config) {
+  constructor (log, config, quiet) {
     this.log = log;
+    this.quiet = quiet;
     this.host = config.host;
     this.port = config.port;
     this.log(`Initialized EDS OW-Server at ${this.host}:${this.port}`);
   }
 
   getState(deviceList, callback) {
-    this.log(`Pulling update from ${this.host}`)
+    if (!this.quiet) {
+      this.log(`Pulling update from ${this.host}`);
+    }
     http.get({ hostname: this.host, port: this.port, path: '/details.xml' }, (resp) => {
       let data = '';
 

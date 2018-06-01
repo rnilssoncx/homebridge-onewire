@@ -5,8 +5,9 @@ const Q = require('q');
 const owDevices = require('./ow-devices.json');
 
 class ServerOWFS {
-  constructor(log, config) {
+  constructor(log, config, quiet) {
     this.log = log;
+    this.quiet = quiet;
     this.host = config.host;
     this.port = config.port;
     this.owServer = new OWClient({ host: this.host, port: this.port });
@@ -17,6 +18,9 @@ class ServerOWFS {
     let owReads = [];
     let cleanJSON = {};
 
+    if (!this.quiet) {
+      this.log(`Pulling update from ${this.host}`);
+    }
     for (let device of Object.keys(deviceList)) {
       cleanJSON[device] = {};
       for (let attribute of Object.keys(owDevices[deviceList[device].type].OWFSServer)) {

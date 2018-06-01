@@ -7,7 +7,7 @@ let Accessory, Characteristic, Service;
 const owDevices = require('./ow-devices.json');
 
 class OWAccessory {
-  constructor(log, config, api, version, createLogger) {
+  constructor(log, config, api, version, quiet, createLogger) {
     Accessory = api.hap.Accessory;
     Characteristic = api.hap.Characteristic;
     Service = api.hap.Service;
@@ -18,6 +18,7 @@ class OWAccessory {
     this.name = config.name;
     this.type = config.type;
     this.version = version;
+    this.quiet = quiet;
     this.state = {};
     this.services = {};
     this._factories = {
@@ -86,6 +87,7 @@ class OWAccessory {
     const fG = { 'temperature': 'temp', 'humidity': 'humidity' };
     let logData = { 'time': moment().unix() };
     let logValues = [];
+    let problem = false;
 
     if (typeof device == 'undefined') {
       this.log(`${this.name} - no data received`);
@@ -109,19 +111,25 @@ class OWAccessory {
         if (capability in this.state) {
           delete this.state[capability];
         }
+        problem = true;
       }
     }
     if (this.loggingService) {
       this.loggingService.addEntry(logData);
       logValues.push('logged');
     }
-    this.log(`${this.name} - ${logValues.join(', ')}`);
+    if (!this.quiet || problem) {
+      this.log(this.quiet);
+      this.log(`${this.name} - ${logValues.join(', ')}`);
+    }
   }
 
   getState(capability, callback) {
     if (capability in this.state) {
+      this.log(`${this.name} get state request - ${capability}: ${this.state[capability]}`);
       callback(null, this.state[capability])
     } else {
+      this.log(`${this.name} get state request - ${capability} not set`);
       callback(new Error(`Error: No ${capability} set for ${this.name}`));
     }
   }

@@ -61,7 +61,11 @@ After [Homebridge](https://github.com/nfarina/homebridge) has been installed:
 
 ### Optional platform settings:
 
-`update_interval`:  Number of minutes between polls of the 1-Wire system
+`update_interval`:  Number of minutes between polls of the 1-Wire system (default: "1")
+
+`log_days`: Number of days of Fakegato history to log for sensors (default: "365")
+
+`quiet`: If set to "true", logging will only happen for errors.  If not present or set to "false", log will contain entries for each sensor reading. (default: "false")
 
 ## Credits
 

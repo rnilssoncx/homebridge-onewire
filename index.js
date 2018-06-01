@@ -34,8 +34,13 @@ class OneWire {
     this.host = config.host || 'localhost';
     this.port = config.port || 80;
     this.update_interval = config['update_interval'] || 1; // minutes
+    this.logDays = config['log_days'] || 365;
+    this.quiet = (config.quiet == 'true') || false;
+    if (this.quiet) {
+      this.log('Quiet logging mode');
+    }
     this.devices = {};
-    this.server = new servers[config.server || 'EDS'](log, config);
+    this.server = new servers[config.server || 'EDS'](log, config, this.quiet);
     for (var device of config.devices) {
       this.devices[device.address] = device;
     }
@@ -46,7 +51,7 @@ class OneWire {
     for (var device of Object.values(this.devices)) {
       this.log(`Found device in config: "${device.name}"`);
       if (owDevices[device.type]) {
-        const accessory = new OWAccessory(this.log, device, this.api, version, this.createLogger.bind(this));
+        const accessory = new OWAccessory(this.log, device, this.api, version, this.quiet, this.createLogger.bind(this));
         this.devices[device.address].accessory = accessory;
         _accessories.push(accessory);
       } else {
@@ -62,7 +67,7 @@ class OneWire {
 
   createLogger(type, accessory) {
     return new FakeGatoHistoryService(type, accessory, {
-      size: 4032,
+      size: this.logDays*24*6, // Fakegato logs a data point every 10 minutes
       storage: 'fs'
     });
   }
