@@ -35,7 +35,7 @@ class OneWire {
     this.port = config.port || 80;
     this.update_interval = config['update_interval'] || 1; // minutes
     this.logDays = config['log_days'] || 365;
-    this.quiet = (config.quiet == 'true') || false;
+    this.quiet = config.quiet || false;
     if (this.quiet) {
       this.log('Quiet logging mode');
     }
