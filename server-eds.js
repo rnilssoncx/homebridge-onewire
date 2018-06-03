@@ -2,9 +2,11 @@
 
 const convert = require('xml-js');
 const http = require('http');
+const relayControlOptions = { '0': 'auto', '1': 'auto on', '2': 'manual', '3': 'off' };
+const relayState = { '0': false, '1': true };
 
 class ServerEDS {
-  constructor (log, config, quiet) {
+  constructor(log, config, quiet) {
     this.log = log;
     this.quiet = quiet;
     this.host = config.host;
@@ -32,12 +34,11 @@ class ServerEDS {
       this.log('Failed to get update from server');
       callback(error);
     });
-
   }
 
   _processXML(data, callback) {
     let newReading = {};
-  
+
     let options = { compact: true };
     let json = convert.xml2js(data, options);
 
@@ -59,27 +60,56 @@ class ServerEDS {
     }
   }
 
+
   _cleanJSON(device) {
     let cleanJSON = {};
-    
+
     for (var element of Object.keys(device)) {
-      switch(element) {
+      switch (element) {
         case 'Temperature':
           cleanJSON.temperature = this._temperature(device[element]._text, device[element]._attributes.Units);
           break;
         case 'Humidity':
-          cleanJSON.humidity = this._humidity(device);
+          cleanJSON.humidity = this._percentage(device[element]._text);
+          break;
+        case 'Humidex':
+          cleanJSON.humidex = this._percentage(device[element]._text);
+          break;
+        case 'RelayFunction':
+          cleanJSON.relayControl = relayControlOptions[device[element]._text];
+          break;
+        case 'RelayState':
+          cleanJSON.relayState = relayState[device[element]._text];
+          break;
+        case 'TemperatureHighAlarmState':
+        case 'TemperatureLowAlarmState':
+        case 'HumidityHighAlarmState':
+        case 'HumidityLowAlarmStat':
+        case 'DewPointHighAlarmState':
+        case 'DewPointLowAlarmState':
+        case 'HumidexHighAlarmState':
+        case 'HumidexLowAlarmState':
+        case 'HeatIndexHighAlarmState':
+        case 'HeatIndexLowAlarmState':
+          if (device[element]._text == '1') {
+            cleanJSON.alarmState = true;
+          } else if (typeof cleanJSON.alarmState == 'undefined') {
+            cleanJSON.alarmState = false;
+          }
+          break;
+        case 'HumidexHighAlarmValue': // Hard code to Humidex
+          cleanJSON.threshold = parseInt(device[element]._text);
           break;
         default:
-          cleanJSON[element] = device[element]._text;
+        // cleanJSON[element] = device[element]._text;
       }
     }
     return cleanJSON;
   }
 
   _temperature(value, units, precision = 1) {
-    var factor = Math.pow(10, precision);
-    var temperature = parseFloat(value);
+    const factor = Math.pow(10, precision);
+    const temperature = parseFloat(value);
 
     switch (units) {
       case 'Centigrade':
@@ -91,20 +121,44 @@ class ServerEDS {
     return Math.round(temperature * factor) / factor;
   }
 
-  _humidity(device, precision = 1) {
-    var factor = Math.pow(10, precision);
-    var humidity = parseFloat(device['Humidity']._text);
+  _percentage(value, precision = 0) {
+    const factor = Math.pow(10, precision);
+    const percentage = parseFloat(value);
 
-    switch (device['Name']) {
-      default:
-        break;
-    }
+    return Math.round(percentage * factor) / factor;
+  }
 
-    switch (device['Humidity']._attributes.Units) {
-      default:
-        break;
-    }
-    return Math.round(humidity * factor) / factor;
+  setState(rom, attribute, value) {
+    const translate = {
+      'threshold': 'HumidexHighAlarmValue',
+      'relayControl': 'RelayFunction',
+      'LEDControl': 'LEDFunction',
+      'RelayState': 'RelayState'
+    };
+    const callParms = {'rom': rom, 'attribute': attribute, 'value': value};
+
+    attribute = translate[attribute];
+    return new Promise((resolve, reject) => {
+      if (typeof attribute == 'undefined') {
+        this.log(`Undefined element: ${callParms}`);
+        let error = new Error(`Undefined element: ${attribute}`);
+        error.callParms = callParms;
+        reject(error);
+      }
+      http.get({ hostname: this.host, port: this.port, path: `/devices.htm?rom=${rom}&variable=${attribute}&value=${value}` }, (resp) => {
+        if (resp.statusCode != 200) {
+          this.log(`Failed to set value: ${callParms}`);
+          let error = new Error(`Failed to set value: ${callParms} - Response: ${resp.statusCode}`);
+          error.callParms = callParms;
+          reject(error);
+        }
+        resolve(callParms);
+      }).on("error", (error) => {
+        this.log(`Failed to set value: ${callParms} - Response: ${resp.statusCode}`);
+        error.callParms = callParms;
+        reject(error);
+      });
+    })
   }
 }
 

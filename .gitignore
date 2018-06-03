@@ -3,3 +3,4 @@
 .DS_Store
 details.xml
 package-lock.json
+test*

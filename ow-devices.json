@@ -22,5 +22,9 @@
       "humidity": ["EDS0065/humidity", "float", 1]
   
     }
+  },
+  "EDS0065 Humidistat": {
+    "services": ["temperature", "humidistat"],
+    "logger": "room"
   }
 }
