@@ -1,6 +1,6 @@
 {
   "name": "homebridge-onewire",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "A HomeBridge plugin for OneWire systems",
   "main": "index.js",
   "scripts": {
@@ -28,5 +28,7 @@
     "xml-js": "^1.6.4",
     "owjs": "^0.1.1",
     "q": "^1.0.1"
-  }
+  },
+  "homepage": "https://github.com/rnilssoncx/homebridge-onewire#readme",
+  "devDependencies": {}
 }
