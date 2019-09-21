@@ -201,7 +201,7 @@ class OWAccessory {
           changes.active = 1;
         } else {
           changes.currentState = 1;
-          changes.active = 0;
+          changes.active = 1;
         }
       } else { // Relay is set to manual control
         if (device.relayState) { // Active
@@ -209,7 +209,7 @@ class OWAccessory {
           changes.active = 1;
         } else {
           changes.currentState = 1;
-          changes.active = 0;
+          changes.active = 1;
         }
       }
     }

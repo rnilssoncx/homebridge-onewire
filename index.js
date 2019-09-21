@@ -43,7 +43,6 @@ module.exports = function (homebridge) {
 
   Characteristic.CurrentHumidex.UUID = '21000010-0000-1000-8000-0026BB765291';
 
-
   UUIDGen = homebridge.hap.uuid;
   FakeGatoHistoryService = require('fakegato-history')(homebridge);
 
